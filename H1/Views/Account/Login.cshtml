@@ -1,0 +1,129 @@
+﻿@using H1Security.Identity.IdentityViewModel
+@model LoginViewModel
+@{
+    ViewBag.Title = "Login";
+}
+
+@{
+    Layout = null;
+    ViewBag.Title = "Login";
+
+}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="~/Images/favicon.ico" type="image/x-icon">
+    <title>Prontuário | @ViewBag.Title</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+     @Scripts.Render("~/bundles/ie")
+     <![endif]-->
+
+</head>
+<body class="login-body" onload="startTime()">
+    <section class="container animated fadeInUp">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div id="login-wrapper">
+                    <header>
+                        <div class="brand">
+                            <a href="index.html" class="logo">
+                                @*<i class="icon-layers"></i>
+        <span>NEU</span>BOARD*@
+                                <img src="@Url.Content("~/Images/logo_h1SemFundoOrig.png")" class="img-responsive" alt="Health One">
+                            </a>
+                        </div>
+                    </header>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Health One
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            @*<p> Login </p>*@
+                            @using (Ajax.BeginForm("Login", "Account", new AjaxOptions { HttpMethod = "POST" }, new { id = "form", role = "form", @class = "form-horizontal" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        
+                                        @Html.TextBoxFor(m => m.Usuario, new { placeholder = "Login", id = "email", @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.Usuario)
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <i class="fa fa-lock"></i>
+                                        @Html.PasswordFor(m => m.Password, new { placeholder = "Senha", id = "password", @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.Password)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <input type="submit"  class="btn btn-primary btn-block" value="Login">
+                                        @*<a href="@Url.Action("Index", "Dashboard")" class="btn btn-primary btn-block">Login</a>*@
+                                        @*<hr />*@
+                                        @*<a href="@Url.Action("SignUp", "Pages")" class="btn btn-default btn-block">Not a member? Sign Up</a>*@
+                                    </div>
+                                </div>
+                                @Html.ValidationSummary(true)
+                            }
+
+                        </div>
+
+                    </div>
+                    <div id="time" style=" width:100%;color:#fff; font-size:70px; display:inline-block; text-align:center; font-family:'Lato',sans-serif; font-weight 100;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/plugins/navgoco")
+    @Scripts.Render("~/plugins/pace")
+    @Scripts.Render("~/bundles/app")
+    <script>
+    function startTime() {
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        // add a zero in front of numbers<10
+        m = checkTime(m);
+        s = checkTime(s);
+
+        document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+
+        t = setTimeout(function () { startTime() }, 500);
+    }
+
+    function checkTime(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    }
+    </script>
+</body>a
+
+</html>

@@ -1,0 +1,81 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Pesquisa de Pacientes";
+}
+
+<section class="main-content-wrapper">
+    <div class="pageheader">
+        <h1 style="color: #999;">@ViewBag.Title</h1>
+        <div class="breadcrumb-wrapper hidden-xs">
+            <span class="label">Você está aqui:</span>
+            <ol class="breadcrumb">
+                <li>
+                    Paciente
+                </li>
+                <li class="active">Pesquisa de Pacientes</li>
+            </ol>
+        </div>
+    </div>
+    <section id="main-content" class="animated fadeInUp">
+        <div class="row">
+            <div class="col-md-9">
+                @*@Html.HiddenFor(p => p.co)*@
+                <div>
+                    <select id="pesquisaPacientes2" class="js-data-example-ajax" style="width:100%"></select>
+                </div>
+                
+            </div>
+            
+        </div>
+    </section>
+</section>
+
+@*-------------------*@
+<script type="text/javascript">
+    //var PacienteQueryDownTimmer = -1;
+    
+    $(document).ready(function () {
+        $("#pesquisaPacientes2").select2({
+            ajax: {
+                url: '@Url.Content("~/Paciente/PesquisarPacienteS2")',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term, // search term
+                        page: params.page//,
+                        //id: $("#clientes2").val()
+                    };
+                },
+                error: function (a, b, c) {
+                    debugger
+                },
+                processResults: function (data, params) {
+                    debugger
+                    params.page = params.page || 1;
+                    return {
+                        results: data.items,
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+            minimumInputLength: 2,
+            placeholder: 'Pesquise um paciente por nome ou código',
+            //templateResult: funformatRepo, // omitted for brevity, see the source of this page
+            templateResult: function (data) {
+                debugger
+                if (data.id === undefined) {
+                    return data.text = 'Pesquisando...';
+                }
+                //debugger
+                //$("#codCliente").val(data.id);
+                return '<b>' +"n° Pront."+ data.InfoExtra + '</b>' + ' - ' + '<b>' + data.id + '</b>' + ' - ' + data.text;
+            },
+            //templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+        });
+    });
+</script>
